@@ -6058,18 +6058,85 @@
 <blockquote>
 <p>Explain how to implement doubly linked lists using only one pointer value $x.np$ per item instead of the usual two ($next$ and $prev$). Assume all pointer values can be interpreted as $k$-bit integers, and define $x.np$ to be $x.np = x.next \text{ XOR } x.prev$, the $k$-bit "exclusive-or" of $x.next$ and $x.prev$. (The value $\text{NIL}$ is represented by $0$.) Be sure to describe what information you need to access the head of the list. Show how to implement the $\text{SEARCH}$, $\text{INSERT}$, and $\text{DELETE}$ operations on such a list. Also show how to reverse such a list in $O(1)$ time.</p>
 </blockquote>
-<p>\begin{align}
-head.np &amp;= next \\
-tail.np &amp;= prev \\
-   next &amp;= x.np \text{ XOR } prev \\
-   prev &amp;= x.np \text{ XOR } next \\
-\end{align}</p>
-<p>Reverse:</p>
-<p>\begin{align}
-      head.np.np &amp;= (head\text{ XOR }head.np.np)\text{ XOR }tail \\
-      tail.np.np &amp;= (tail\text{ XOR }tail.np.np)\text{ XOR }head \\
-head.np, tail.np &amp;= tail.np, head.np
-\end{align}</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">LIST</span><span class="o">-</span><span class="n">SEARCH</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+    <span class="n">prev</span> <span class="o">=</span> <span class="n">NIL</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">L</span><span class="p">.</span><span class="n">head</span>
+    <span class="k">while</span> <span class="n">x</span> <span class="o">!=</span> <span class="n">NIL</span> <span class="n">and</span> <span class="n">x</span><span class="p">.</span><span class="n">key</span> <span class="o">!=</span> <span class="n">k</span>
+        <span class="n">next</span> <span class="o">=</span> <span class="n">x</span><span class="p">.</span><span class="n">np</span> <span class="n">XOR</span> <span class="n">prev</span>
+        <span class="n">prev</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">next</span>
+    <span class="k">return</span> <span class="n">x</span>
+</pre></div>
+</td></tr></table>
+
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">LIST</span><span class="o">-</span><span class="n">INSERT</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">x</span><span class="p">.</span><span class="n">np</span> <span class="o">=</span> <span class="n">NIL</span> <span class="n">XOR</span> <span class="n">L</span><span class="p">.</span><span class="n">tail</span>
+    <span class="k">if</span> <span class="n">L</span><span class="p">.</span><span class="n">tail</span> <span class="o">!=</span> <span class="n">NIL</span>
+        <span class="n">L</span><span class="p">.</span><span class="n">tail</span><span class="p">.</span><span class="n">np</span> <span class="o">=</span> <span class="n">x</span> <span class="n">XOR</span> <span class="p">(</span><span class="n">NIL</span> <span class="n">XOR</span> <span class="n">L</span><span class="p">.</span><span class="n">tail</span><span class="p">.</span><span class="n">np</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">L</span><span class="p">.</span><span class="n">head</span> <span class="o">==</span> <span class="n">NIL</span>
+        <span class="n">L</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="n">L</span><span class="p">.</span><span class="n">tail</span> <span class="o">=</span> <span class="n">x</span>
+</pre></div>
+</td></tr></table>
+
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">LIST</span><span class="o">-</span><span class="n">DELETE</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">L</span><span class="p">.</span><span class="n">head</span>
+    <span class="n">prev</span> <span class="o">=</span> <span class="n">NIL</span>
+    <span class="k">while</span> <span class="n">y</span> <span class="o">!=</span> <span class="n">NIL</span>
+        <span class="k">if</span> <span class="n">y</span> <span class="o">==</span> <span class="n">x</span>
+            <span class="n">next</span> <span class="o">=</span> <span class="n">y</span><span class="p">.</span><span class="n">np</span> <span class="n">XOR</span> <span class="n">prev</span>
+            <span class="k">if</span> <span class="n">prev</span> <span class="o">!=</span> <span class="n">NIL</span>
+                <span class="n">prev</span><span class="p">.</span><span class="n">np</span> <span class="o">=</span> <span class="p">(</span><span class="n">prev</span><span class="p">.</span><span class="n">np</span> <span class="n">XOR</span> <span class="n">y</span><span class="p">)</span> <span class="n">XOR</span> <span class="n">next</span>
+            <span class="k">else</span> <span class="n">L</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="n">next</span>
+            <span class="k">if</span> <span class="n">next</span> <span class="o">!=</span> <span class="n">NIL</span>
+                <span class="n">next</span><span class="p">.</span><span class="n">np</span> <span class="o">=</span> <span class="p">(</span><span class="n">next</span><span class="p">.</span><span class="n">np</span> <span class="n">XOR</span> <span class="n">y</span><span class="p">)</span> <span class="n">XOR</span> <span class="n">prev</span>
+            <span class="k">else</span> <span class="n">L</span><span class="p">.</span><span class="n">tail</span> <span class="o">=</span> <span class="n">prev</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">next</span>
+        <span class="k">else</span>
+            <span class="n">next</span> <span class="o">=</span> <span class="n">y</span><span class="p">.</span><span class="n">np</span> <span class="n">XOR</span> <span class="n">prev</span>
+            <span class="n">prev</span> <span class="o">=</span> <span class="n">y</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">next</span>
+</pre></div>
+</td></tr></table>
+
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">REVERSE</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">L</span><span class="p">.</span><span class="n">head</span>
+    <span class="n">L</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="n">L</span><span class="p">.</span><span class="n">tail</span>
+    <span class="n">L</span><span class="p">.</span><span class="n">tail</span> <span class="o">=</span> <span class="n">tmp</span>
+</pre></div>
+</td></tr></table>
                 
                   
                 
