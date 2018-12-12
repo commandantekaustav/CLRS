@@ -6069,7 +6069,7 @@
     <span class="n">prev</span> <span class="o">=</span> <span class="n">NIL</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">L</span><span class="p">.</span><span class="n">head</span>
     <span class="k">while</span> <span class="n">x</span> <span class="o">!=</span> <span class="n">NIL</span> <span class="n">and</span> <span class="n">x</span><span class="p">.</span><span class="n">key</span> <span class="o">!=</span> <span class="n">k</span>
-        <span class="n">next</span> <span class="o">=</span> <span class="n">x</span><span class="p">.</span><span class="n">np</span> <span class="n">XOR</span> <span class="n">prev</span>
+        <span class="n">next</span> <span class="o">=</span> <span class="n">prev</span> <span class="n">XOR</span> <span class="n">x</span><span class="p">.</span><span class="n">np</span>
         <span class="n">prev</span> <span class="o">=</span> <span class="n">x</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">next</span>
     <span class="k">return</span> <span class="n">x</span>
@@ -6085,7 +6085,7 @@
 7</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">LIST</span><span class="o">-</span><span class="n">INSERT</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
     <span class="n">x</span><span class="p">.</span><span class="n">np</span> <span class="o">=</span> <span class="n">NIL</span> <span class="n">XOR</span> <span class="n">L</span><span class="p">.</span><span class="n">tail</span>
     <span class="k">if</span> <span class="n">L</span><span class="p">.</span><span class="n">tail</span> <span class="o">!=</span> <span class="n">NIL</span>
-        <span class="n">L</span><span class="p">.</span><span class="n">tail</span><span class="p">.</span><span class="n">np</span> <span class="o">=</span> <span class="n">x</span> <span class="n">XOR</span> <span class="p">(</span><span class="n">NIL</span> <span class="n">XOR</span> <span class="n">L</span><span class="p">.</span><span class="n">tail</span><span class="p">.</span><span class="n">np</span><span class="p">)</span>
+        <span class="n">L</span><span class="p">.</span><span class="n">tail</span><span class="p">.</span><span class="n">np</span> <span class="o">=</span> <span class="p">(</span><span class="n">L</span><span class="p">.</span><span class="n">tail</span><span class="p">.</span><span class="n">np</span> <span class="n">XOR</span> <span class="n">NIL</span><span class="p">)</span> <span class="n">XOR</span> <span class="n">x</span>   <span class="c1">// tail.prev XOR x</span>
     <span class="k">if</span> <span class="n">L</span><span class="p">.</span><span class="n">head</span> <span class="o">==</span> <span class="n">NIL</span>
         <span class="n">L</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="n">x</span>
     <span class="n">L</span><span class="p">.</span><span class="n">tail</span> <span class="o">=</span> <span class="n">x</span>
@@ -6106,25 +6106,21 @@
 12
 13
 14
-15
-16
-17</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">LIST</span><span class="o">-</span><span class="n">DELETE</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+15</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">LIST</span><span class="o">-</span><span class="n">DELETE</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">L</span><span class="p">.</span><span class="n">head</span>
     <span class="n">prev</span> <span class="o">=</span> <span class="n">NIL</span>
     <span class="k">while</span> <span class="n">y</span> <span class="o">!=</span> <span class="n">NIL</span>
-        <span class="k">if</span> <span class="n">y</span> <span class="o">==</span> <span class="n">x</span>
-            <span class="n">next</span> <span class="o">=</span> <span class="n">y</span><span class="p">.</span><span class="n">np</span> <span class="n">XOR</span> <span class="n">prev</span>
-            <span class="k">if</span> <span class="n">prev</span> <span class="o">!=</span> <span class="n">NIL</span>
-                <span class="n">prev</span><span class="p">.</span><span class="n">np</span> <span class="o">=</span> <span class="p">(</span><span class="n">prev</span><span class="p">.</span><span class="n">np</span> <span class="n">XOR</span> <span class="n">y</span><span class="p">)</span> <span class="n">XOR</span> <span class="n">next</span>
-            <span class="k">else</span> <span class="n">L</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="n">next</span>
-            <span class="k">if</span> <span class="n">next</span> <span class="o">!=</span> <span class="n">NIL</span>
-                <span class="n">next</span><span class="p">.</span><span class="n">np</span> <span class="o">=</span> <span class="p">(</span><span class="n">next</span><span class="p">.</span><span class="n">np</span> <span class="n">XOR</span> <span class="n">y</span><span class="p">)</span> <span class="n">XOR</span> <span class="n">prev</span>
-            <span class="k">else</span> <span class="n">L</span><span class="p">.</span><span class="n">tail</span> <span class="o">=</span> <span class="n">prev</span>
-            <span class="n">y</span> <span class="o">=</span> <span class="n">next</span>
-        <span class="k">else</span>
-            <span class="n">next</span> <span class="o">=</span> <span class="n">y</span><span class="p">.</span><span class="n">np</span> <span class="n">XOR</span> <span class="n">prev</span>
+        <span class="n">next</span> <span class="o">=</span> <span class="n">prev</span> <span class="n">XOR</span> <span class="n">y</span><span class="p">.</span><span class="n">np</span>
+        <span class="k">if</span> <span class="n">y</span> <span class="o">!=</span> <span class="n">x</span>
             <span class="n">prev</span> <span class="o">=</span> <span class="n">y</span>
             <span class="n">y</span> <span class="o">=</span> <span class="n">next</span>
+        <span class="k">else</span>
+            <span class="k">if</span> <span class="n">prev</span> <span class="o">!=</span> <span class="n">NIL</span>
+                <span class="n">prev</span><span class="p">.</span><span class="n">np</span> <span class="o">=</span> <span class="p">(</span><span class="n">prev</span><span class="p">.</span><span class="n">np</span> <span class="n">XOR</span> <span class="n">y</span><span class="p">)</span> <span class="n">XOR</span> <span class="n">next</span>  <span class="c1">// prev.prev XOR next</span>
+            <span class="k">else</span> <span class="n">L</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="n">next</span>
+            <span class="k">if</span> <span class="n">next</span> <span class="o">!=</span> <span class="n">NIL</span>
+                <span class="n">next</span><span class="p">.</span><span class="n">np</span> <span class="o">=</span> <span class="n">prev</span> <span class="n">XOR</span> <span class="p">(</span><span class="n">y</span> <span class="n">XOR</span> <span class="n">next</span><span class="p">.</span><span class="n">np</span><span class="p">)</span>  <span class="c1">// prev XOR next.next</span>
+            <span class="k">else</span> <span class="n">L</span><span class="p">.</span><span class="n">tail</span> <span class="o">=</span> <span class="n">prev</span>
 </pre></div>
 </td></tr></table>
 
