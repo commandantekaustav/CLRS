@@ -5932,8 +5932,8 @@ z &amp; s &amp; z &amp; s &amp; \text{NIL}
 </blockquote>
 <ol>
 <li>Verify that $s.d = 0$ and $s.\pi = \text{NIL}$</li>
-<li>Verify that $v.d = v.\pi + w(v.\pi, v)$ for all $v \in s$.</li>
-<li>Verify that $v.d = \infty$ if and only if $v.\beta = \text{NIL}$ for all $v \in s$.</li>
+<li>Verify that $v.d = v.\pi.d + w(v.\pi, v)$ for all $v \notin s$.</li>
+<li>Verify that $v.d = \infty$ if and only if $v.\pi = \text{NIL}$ for all $v \notin s$.</li>
 <li>If any of the above verification tests fail, declare the output to be incorrect. Otherwise, run one pass of Bellman-Ford, i.e., relax each edge $(u, v) \in E$ one time. If any values of $v.d$ change, then declare the output to be incorrect; otherwise, declare the output to be correct.</li>
 </ol>
 <h2 id="243-5">24.3-5</h2>
