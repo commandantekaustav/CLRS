@@ -5896,25 +5896,36 @@
 <blockquote>
 <p>Make a $3$-by-$3$ chart with row and column labels $\text{WHITE}$, $\text{GRAY}$, and $\text{BLACK}$. In each cell $(i, j)$, indicate whether, at any point during a depth-first search of a directed graph, there can be an edge from a vertex of color $i$ to a vertex of color $j$. For each possible edge, indicate what edge types it can be. Make a second such chart for depth-first search of an undirected graph.</p>
 </blockquote>
+<p>According to Theorem 22.7, there are 3 cases of relationship between interval of vertex $u$ and $v$, $u.interval \subset v.interval$, $v.interval \subset u.interval$, and $u.interval$ is detached from $u.interval$. We judge the possibility according to this Theorem.</p>
 <ul>
 <li>
-<p><strong>Directed:</strong></p>
+<p>For Directed Graph:</p>
+<ol>
+<li>$\text{BLACK}$ to $\text{BLACK}$ and $\text{WHITE}$ to $\text{WHITE}$ works with everything, we omit this two later.</li>
+<li>For Cross Edge $(u, v)$, we must have $v.d &lt; v.f &lt; u.d &lt; u.f$, then it could be $\text{WHITE}$ to $\text{BLACK}$, $\text{WHITE}$ to $\text{GRAY}$ and $\text{GRAY}$ to $\text{BLACK}$.</li>
+<li>For Tree Edge and Forward Edge $(u, v)$, we must have $u.d &lt; v.d &lt; v.f &lt; u.f$, then it could be $\text{GRAY}$ to $\text{WHITE}$, $\text{GRAY}$ to $\text{GRAY}$ and $\text{GRAY}$ to $\text{BLACK}$.</li>
+<li>For Back Edge $(u, v)$, we must have $v.d &lt; u.d &lt; u.f &lt; v.f$, then it could be $\text{WHITE}$ to $\text{GRAY}$, $\text{GRAY}$ to $\text{GRAY}$ and $\text{BLACK}$ to $\text{GRAY}$.</li>
+</ol>
 <p>\begin{array}{c|ccc}
 from\backslash to &amp; \text{BLACK}                &amp; \text{GRAY}                &amp; \text{WHITE} \\
 \hline
-\text{BLACK}      &amp; \text{Allkinds}             &amp; \text{Back, Cross}         &amp; \text{Back, Cross} \\
-\text{GRAY}       &amp; \text{Tree, Forward, Cross} &amp; \text{Tree, Forward, Back} &amp; \text{Back, Cross} \\
-\text{WHITE}      &amp; \text{Cross, Tree, Forward} &amp; \text{Cross, Back}         &amp; \text{Allkinds}
+\text{BLACK}      &amp; \text{Allkinds}             &amp; \text{Back}                &amp; - \\
+\text{GRAY}       &amp; \text{Tree, Forward, Cross} &amp; \text{Tree, Forward, Back} &amp; \text{Tree, Forward} \\
+\text{WHITE}      &amp; \text{Cross}                &amp; \text{Cross, Back}         &amp; \text{Allkinds}
 \end{array}</p>
 </li>
 <li>
-<p><strong>Undirected:</strong></p>
+<p>For Undirected Graph, starting from Directed Chart, we remove the Forward Edge and Cross Edge, and when a Back Edge exist, we add Tree Edge, when a Tree Edge exist, we add Back Edge. This is correct for following reason:</p>
+<ol>
+<li>Theorem 22.10: In a depth-first search of an undirected graph $G$, every edge of $G$ is either a tree edge or a back edge. So Tree edge and back edge only.</li>
+<li>If $(u, v)$ is a Tree edge from $u$'s perspective, $(u, v)$ is also a Back Edge from $v$'s perspective.</li>
+</ol>
 <p>\begin{array}{c|ccc}
-from\backslash to &amp; \text{BLACK}    &amp; \text{GRAY}                &amp; \text{WHITE} \\
+from\backslash to &amp; \text{BLACK}      &amp; \text{GRAY}       &amp; \text{WHITE} \\
 \hline
-\text{BLACK}      &amp; \text{Allkinds} &amp; \text{Allkinds}            &amp; \text{Allkinds} \\
-\text{GRAY}       &amp; -               &amp; \text{Tree, Forward, Back} &amp; \text{Allkinds} \\
-\text{WHITE}      &amp; -               &amp; -                          &amp; \text{Allkinds}
+\text{BLACK}      &amp; \text{Tree, Back} &amp; \text{Tree, Back} &amp; - \\
+\text{GRAY}       &amp; \text{Tree, Back} &amp; \text{Tree, Back} &amp; \text{Tree, Back} \\
+\text{WHITE}      &amp; -                 &amp; \text{Tree, Back} &amp; \text{Tree, Back}
 \end{array}</p>
 </li>
 </ul>

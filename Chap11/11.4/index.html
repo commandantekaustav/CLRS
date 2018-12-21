@@ -5887,7 +5887,7 @@ h(k, i) = (k + i(1 + k \mod 10)) \mod 11 &amp; T_0 &amp; T_1 &amp; T_2 &amp; T_3
         <span class="k">if</span> <span class="n">T</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">NIL</span> <span class="n">or</span> <span class="n">T</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">DELETE</span>
             <span class="n">T</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">k</span>
             <span class="k">return</span> <span class="n">j</span>
-        <span class="k">else</span> <span class="n">j</span>
+        <span class="k">else</span> <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
     <span class="n">until</span> <span class="n">i</span> <span class="o">==</span> <span class="n">m</span>
     <span class="n">error</span> <span class="s">&quot;hash table overflow&quot;</span>
 </pre></div>
